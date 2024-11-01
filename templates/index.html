@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANIMAIS 2024</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #928c8c; 
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #62d1c4; 
+            text-align: center;
+            margin-top: 20px;
+        }
+        .animal-item {
+            margin: 15px 0;
+            background-color: #ad9494; 
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn-info {
+            background-color: #6dcc71; 
+            border: none;
+        }
+        .btn-info:hover {
+            background-color: #2e7d32; 
+        }
+        .form-container {
+            margin-bottom: 30px;
+        }
+        .carousel-wrapper {
+            position: relative; /* Permitir posicionamento absoluto */
+            margin-bottom: 30px; /* Espaço inferior para as setas não ficarem sobre o conteúdo */
+        }
+        .carousel-control-prev,
+        .carousel-control-next {
+            position: absolute; /* Posicionamento absoluto */
+            top: 50%; /* Centralizar verticalmente */
+            transform: translateY(-50%); /* Ajustar a posição */
+        }
+        .carousel-control-prev {
+            left: -50px; /* Ajustar a distância do lado esquerdo */
+        }
+        .carousel-control-next {
+            right: -50px; /* Ajustar a distância do lado direito */
+        }
+    </style>
+</head>
+<body>
+    <h1>ADICIONE ANIMAIS</h1>
+    <div class="form-container text-center">
+        <form method="POST" action="/">
+            <input type="text" name="title" placeholder="Digite o nome do animal" required class="form-control w-50 mx-auto">
+            <input type="submit" value="Adicionar" class="btn btn-primary mt-2">
+        </form>
+    </div>
+
+    <h1>ANIMAIS CADASTRADOS</h1>
+    <div class="container">
+        <div id="animalCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-wrapper">
+                <div class="carousel-inner">
+                    {% if books %}
+                        {% for book in books %}
+                            <div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
+                                <div class="animal-item">
+                                    <span>{{ book.title }}</span>
+                                    <div>
+                                        <a href="{{ url_for('animal', title=book.title) }}" class="btn btn-info btn-sm">Ver Detalhes</a>
+                                        <form method="POST" action="./update" style="display: inline;">
+                                            <input type="hidden" name="oldtitle" value="{{ book.title }}">
+                                            <input type="text" name="newtitle" placeholder="Novo nome" class="form-control-sm" required style="width: 150px; display: inline;">
+                                            <input type="submit" value="Atualizar" class="btn btn-warning btn-sm">
+                                        </form>
+                                        <form method="POST" action="./delete" style="display: inline;">
+                                            <input type="hidden" name="title" value="{{ book.title }}">
+                                            <input type="submit" value="Deletar" class="btn btn-danger btn-sm">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-center">Nenhum animal cadastrado ainda.</p>
+                    {% endif %}
+                </div>
+
+                <a class="carousel-control-prev" href="#animalCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#animalCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
